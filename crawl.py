@@ -4,10 +4,10 @@ from bs4 import BeautifulSoup
 import json
 file_path = "./sample.json"
 
-out = []
 
 
-for page in range(1, 2):
+for page in range(94, 500):
+    out = []
     url = 'https://www.tradingview.com/ideas/indicator/page-' + str(page)
     response = requests.get(url)
     i = 0
@@ -23,7 +23,7 @@ for page in range(1, 2):
             #sleep(5)
             url = "https://tradingview.com" + title['href']
             response = session.get(url)
-            response.html.render(timeout=20)
+            response.html.render(timeout=40)
             html = response.text
             soup = BeautifulSoup(html, 'html.parser')
             
@@ -80,8 +80,8 @@ for page in range(1, 2):
             print(url + ' success' )
             out.append(result)
 
-with open(file_path, 'w', encoding='utf8') as outfile:
-    json.dump(out, outfile,ensure_ascii = False)
+    with open('./json/page-' + str(page) + '.json', 'w', encoding='utf8') as outfile:
+        json.dump(out, outfile ,ensure_ascii = False)
 
 '''
 https://kr.tradingview.com/api/v1/ideas/IM2KIi2P/comments/tree/?offset=0&sort_by_rating=true
