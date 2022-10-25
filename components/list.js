@@ -1,25 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import Image from "next/image"
-import data from '../data/sample.json';
 import Link from "next/link"
+import Paging from '../utils/Paging';
 import { useRouter } from 'next/router'
 
-function range(size, start) {
-    return Array(size).fill(start).map((x, y) => x + y)
-  }  
 
 function List() {
+
+    const [data, setData] = useState([]);
     const router = useRouter();
-    const page = router.query.page;
+    const [page, setPage] = useState(1);
+
+    
     useEffect(() => {
         if(!router.isReady) return;
-    }, [router.isReady])
+     }, [router.isReady])
+
+     useEffect(() => {
+        if(!page) return;
+        setPage(page);
+        setData(require('../json/page-' + page + '.json')); 
+        
+     }, [page])
+
+
+     const handlePageChange = (page) => {
+        setPage(page);
+      };
+    
+      
 
 
     return (
         <React.Fragment>
             {
-                data.map((item, idx) => (
+                data ? data.map((item, idx) => (
                 <div className="col-md-4" key={idx}>
                     <div className="card mb-4 box-shadow">
                     <Image className="card-img-top" alt="Thumbnil"  width="100%" height="220px" src={item.snapshot} />
@@ -32,18 +47,9 @@ function List() {
                     </div>
                 </div>
 
-                ))
+                )) : ""
             }
-
-                <div>
-                    <nav>
-                        <ul className="pagination pagination-lg">
-                            <li className="page-item disabled">
-                                <a className="page-link" href="#" tabindex="-1">1</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+                 <Paging handlePageChange={handlePageChange} page={page} /> 
 
         </React.Fragment>
     )
