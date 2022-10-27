@@ -3,7 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 import Paging from '../utils/Paging';
 import { useRouter } from 'next/router'
-
+import Router from "next/router";
 
 function List() {
 
@@ -26,6 +26,7 @@ function List() {
 
      const handlePageChange = (page) => {
         setPage(page);
+        Router.push("/list?page=" + page);
       };
     
       
